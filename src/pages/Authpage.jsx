@@ -1,7 +1,7 @@
 // ✅ Import API from api/index.js — NOT from config.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API } from "../api/index";
+import { API } from "../API/index";
 import { useAuth } from "../context/AuthContext";
 
 // Decorative flower SVG component

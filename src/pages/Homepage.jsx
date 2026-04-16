@@ -1,7 +1,7 @@
 // ✅ Import API from api/index.js — NOT from config.js
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { API } from "../api/index";
+import { API } from "../API/index";
 import { useAuth } from "../context/AuthContext";
 import { imgUrl, avatarUrl } from "../config";
 import Navbar from "../components/Navbar";

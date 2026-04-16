@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 import PostCard from "../components/Postcard";
 import CreatePostModal from "../components/Createpostmodal";
 
-const BASE_IMG = "http://localhost:5000/images/";
+const BASE_IMG = "https://social-media-be-jzvd.onrender.com/images/";
 const resolveImg = (img) => {
   if (!img) return null;
   if (img.startsWith("http")) return img;

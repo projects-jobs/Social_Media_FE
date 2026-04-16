@@ -5,7 +5,7 @@ import { API } from "../api/index";
 import { useAuth } from "../context/AuthContext";
 import { avatarUrl } from "../config";
 
-const BASE_IMG = "http://localhost:5000/images/";
+const BASE_IMG = "https://social-media-be-jzvd.onrender.com/images/";
 const fmt = (d) => new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
 function resolveImg(img) {

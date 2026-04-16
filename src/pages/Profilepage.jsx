@@ -1,7 +1,7 @@
 // ✅ Import API from api/index.js
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { API } from "../api/index";
+import { API } from "../api";  
 import { useAuth } from "../context/AuthContext";
 import { avatarUrl } from "../config";
 import Navbar from "../components/Navbar";

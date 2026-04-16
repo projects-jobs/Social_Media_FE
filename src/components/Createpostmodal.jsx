@@ -1,6 +1,6 @@
 // ✅ Import API from api/index.js
 import { useState, useRef } from "react";
-import { API } from "../api";  
+import { API } from "../api/index";
 import { useAuth } from "../context/AuthContext";
 import { avatarUrl } from "../config";
 

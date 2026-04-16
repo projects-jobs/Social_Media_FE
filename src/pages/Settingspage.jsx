@@ -1,7 +1,7 @@
 
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { API } from "../api";  
+import { API } from "../api/index";
 import { useAuth } from "../context/AuthContext";
 import { imgUrl, avatarUrl } from "../config";
 import Navbar from "../components/Navbar";

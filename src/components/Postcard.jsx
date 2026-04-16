@@ -1,7 +1,7 @@
 // ✅ Import API from api/index.js
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { API } from "../api";  
+import { API } from "../api/index";
 import { useAuth } from "../context/AuthContext";
 import { avatarUrl } from "../config";
 

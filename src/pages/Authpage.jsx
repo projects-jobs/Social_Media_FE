@@ -1,13 +1,39 @@
+// ✅ Import API from api/index.js — NOT from config.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API } from "../config";
+import { API } from "../api/index";
 import { useAuth } from "../context/AuthContext";
 
+// Decorative flower SVG component
+function FlowerBlob({ style, color1, color2 }) {
+  return (
+    <div className="absolute pointer-events-none select-none" style={style}>
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <defs>
+          <linearGradient id={`g${color1}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={color1} stopOpacity="0.7"/>
+            <stop offset="100%" stopColor={color2} stopOpacity="0.5"/>
+          </linearGradient>
+        </defs>
+        <path fill={`url(#g${color1})`}
+          d="M100,20 C110,5 130,5 135,20 C145,10 160,15 158,30 C172,28 178,42 168,50
+             C180,55 178,72 165,73 C172,85 162,97 150,93 C148,108 133,113 125,103
+             C118,115 100,115 100,100 C100,115 82,115 75,103 C67,113 52,108 50,93
+             C38,97 28,85 35,73 C22,72 20,55 32,50 C22,42 28,28 42,30
+             C40,15 55,10 65,20 C70,5 90,5 100,20Z"
+          transform="scale(0.9) translate(10,10)"
+        />
+      </svg>
+    </div>
+  );
+}
+
 export default function AuthPage() {
-  const [mode, setMode]     = useState("login");
-  const [form, setForm]     = useState({ username: "", email: "", password: "" });
-  const [error, setError]   = useState("");
+  const [mode, setMode]       = useState("login");
+  const [form, setForm]       = useState({ username: "", email: "", password: "" });
+  const [error, setError]     = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPw, setShowPw]   = useState(false);
   const { login } = useAuth();
   const nav = useNavigate();
 
@@ -27,100 +53,110 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left panel */}
+      {/* ── Left: decorative panel ── */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center"
-        style={{ background: "linear-gradient(135deg, #f43f5e 0%, #ec4899 40%, #a855f7 100%)" }}>
-        <div className="absolute inset-0 opacity-20">
-          {[...Array(20)].map((_, i) => (
-            <div key={i}
-              className="absolute rounded-full bg-white"
-              style={{
-                width: Math.random() * 80 + 20,
-                height: Math.random() * 80 + 20,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.5 + 0.1,
-              }}
-            />
+        style={{ background: "linear-gradient(145deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)" }}>
+
+        {/* Animated flower blobs */}
+        <FlowerBlob style={{ width:320, height:320, top:"-60px", left:"-80px", animation:"spin 20s linear infinite" }} color1="#f43f5e" color2="#ec4899" />
+        <FlowerBlob style={{ width:260, height:260, bottom:"-40px", right:"-60px", animation:"spin 25s linear infinite reverse" }} color1="#a855f7" color2="#6366f1" />
+        <FlowerBlob style={{ width:180, height:180, top:"40%", right:"10%", animation:"spin 15s linear infinite" }} color1="#f59e0b" color2="#f43f5e" />
+        <FlowerBlob style={{ width:140, height:140, bottom:"20%", left:"10%", animation:"spin 18s linear infinite reverse" }} color1="#10b981" color2="#06b6d4" />
+
+        {/* Floating flower icons */}
+        <div className="absolute inset-0 flex flex-wrap gap-8 p-10 opacity-10">
+          {[...Array(24)].map((_, i) => (
+            <span key={i} className="text-4xl select-none"
+              style={{ animation: `float ${3 + (i % 4)}s ease-in-out infinite`, animationDelay: `${i * 0.3}s` }}>
+              {["🌸","🌺","🌼","🌻","🌹","💐"][i % 6]}
+            </span>
           ))}
         </div>
-        <div className="relative text-center text-white px-10 z-10">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-3xl bg-white/20 backdrop-blur flex items-center justify-center shadow-2xl">
-            <svg className="w-11 h-11 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-          </div>
-          <h1 className="text-5xl font-black mb-4 tracking-tight">Vibe</h1>
-          <p className="text-xl text-white/80 font-light">Share moments. Connect with the world.</p>
-          <div className="mt-12 grid grid-cols-3 gap-2 opacity-60">
-            {[...Array(9)].map((_, i) => (
-              <div key={i} className="aspect-square rounded-xl bg-white/20 backdrop-blur" />
+
+        {/* Center content */}
+        <div className="relative z-10 text-center text-white px-10">
+          <div className="text-8xl mb-6 drop-shadow-2xl" style={{ filter: "drop-shadow(0 0 20px rgba(244,63,94,0.5))" }}>🌸</div>
+          <h1 className="text-5xl font-black mb-3 tracking-tight"
+            style={{ fontFamily: "Georgia, serif", textShadow: "0 0 30px rgba(244,63,94,0.4)" }}>
+            Vibe
+          </h1>
+          <p className="text-lg text-white/70 font-light mb-8">Share your beautiful moments</p>
+          <div className="flex justify-center gap-4 flex-wrap">
+            {["🌸 Photos","🌺 Stories","🌼 Connect","🌻 Explore"].map(t => (
+              <span key={t} className="px-3 py-1.5 text-sm bg-white/10 backdrop-blur rounded-full text-white/80 border border-white/20">
+                {t}
+              </span>
             ))}
           </div>
         </div>
+
+        <style>{`
+          @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+          @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        `}</style>
       </div>
 
-      {/* Right panel */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#fafafa]">
+      {/* ── Right: form panel ── */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-gradient-to-br from-rose-50 via-white to-purple-50">
         <div className="w-full max-w-sm">
-          <div className="bg-white rounded-3xl shadow-xl shadow-rose-100/50 p-8 border border-gray-100">
-            {/* Logo (mobile) */}
-            <div className="lg:hidden text-center mb-8">
-              <div className="inline-flex w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-purple-500 items-center justify-center mb-3 shadow-lg">
-                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4 0-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-              </div>
-              <h1 className="text-3xl font-black text-gray-900">Vibe</h1>
-            </div>
+          {/* Mobile logo */}
+          <div className="lg:hidden text-center mb-8">
+            <div className="text-6xl mb-2">🌸</div>
+            <h1 className="text-3xl font-black text-gray-900" style={{ fontFamily: "Georgia,serif" }}>Vibe</h1>
+          </div>
 
+          <div className="bg-white rounded-3xl shadow-xl shadow-rose-100/60 p-8 border border-rose-100/50">
             <h2 className="text-2xl font-bold text-gray-900 mb-1">
-              {mode === "login" ? "Welcome back 👋" : "Join Vibe 🎉"}
+              {mode === "login" ? "Welcome back 👋" : "Join Vibe 🌸"}
             </h2>
             <p className="text-sm text-gray-400 mb-7">
-              {mode === "login" ? "Sign in to your account" : "Create your account today"}
+              {mode === "login" ? "Sign in to your account" : "Create your free account"}
             </p>
 
             {error && (
-              <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-600 flex items-center gap-2">
-                <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/></svg>
-                {error}
+              <div className="mb-5 px-4 py-3 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-600 flex items-center gap-2">
+                <span>⚠️</span> {error}
               </div>
             )}
 
             <form onSubmit={submit} className="space-y-4">
               {mode === "register" && (
                 <div>
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Username</label>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Username</label>
                   <input name="username" value={form.username} onChange={handle} placeholder="yourname" required
-                    className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:border-rose-400 focus:ring-3 focus:ring-rose-100 outline-none text-sm transition-all" />
+                    className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none text-sm transition-all" />
                 </div>
               )}
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Email</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Email</label>
                 <input name="email" type="email" value={form.email} onChange={handle} placeholder="you@email.com" required
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:border-rose-400 focus:ring-3 focus:ring-rose-100 outline-none text-sm transition-all" />
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none text-sm transition-all" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Password</label>
-                <input name="password" type="password" value={form.password} onChange={handle} placeholder="••••••••" required
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:border-rose-400 focus:ring-3 focus:ring-rose-100 outline-none text-sm transition-all" />
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Password</label>
+                <div className="relative">
+                  <input name="password" type={showPw ? "text" : "password"} value={form.password} onChange={handle} placeholder="••••••••" required
+                    className="w-full px-4 py-3 pr-10 rounded-2xl bg-gray-50 border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 outline-none text-sm transition-all" />
+                  <button type="button" onClick={() => setShowPw(p => !p)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">
+                    {showPw ? "Hide" : "Show"}
+                  </button>
+                </div>
               </div>
+
               <button type="submit" disabled={loading}
-                className="w-full py-3.5 rounded-2xl font-bold text-sm text-white shadow-lg shadow-rose-200 hover:shadow-rose-300 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60"
-                style={{ background: "linear-gradient(135deg, #f43f5e 0%, #ec4899 60%, #a855f7 100%)" }}>
+                className="w-full py-3.5 rounded-2xl font-bold text-sm text-white shadow-lg hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60 mt-2"
+                style={{ background: "linear-gradient(135deg,#f43f5e 0%,#ec4899 50%,#a855f7 100%)" }}>
                 {loading ? "Please wait…" : mode === "login" ? "Sign In" : "Create Account"}
               </button>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-400">
-                {mode === "login" ? "New to Vibe? " : "Already have an account? "}
-                <button onClick={() => { setMode(m => m === "login" ? "register" : "login"); setError(""); }}
-                  className="text-rose-500 font-bold hover:text-rose-600 transition-colors">
-                  {mode === "login" ? "Sign up free" : "Sign in"}
-                </button>
-              </p>
+            <div className="mt-6 text-center text-sm text-gray-400">
+              {mode === "login" ? "New to Vibe? " : "Already have an account? "}
+              <button onClick={() => { setMode(m => m === "login" ? "register" : "login"); setError(""); }}
+                className="text-rose-500 font-bold hover:text-rose-600 transition-colors">
+                {mode === "login" ? "Sign up free 🌸" : "Sign in"}
+              </button>
             </div>
           </div>
         </div>

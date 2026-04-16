@@ -11,11 +11,11 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/auth"          element={<AuthPage />} />
-          <Route path="/"              element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-          <Route path="/profile/:id"   element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-          <Route path="/settings"      element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
-          <Route path="*"              element={<Navigate to="/" replace />} />
+          <Route path="/auth"        element={<AuthPage />} />
+          <Route path="/"            element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          <Route path="/profile/:id" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/settings"    element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+          <Route path="*"            element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

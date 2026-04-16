@@ -1,16 +1,80 @@
-# React + Vite
+# 🌸 Vibe Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful Instagram-like social media frontend built with React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 18** — UI library
+- **React Router v6** — client-side routing
+- **Tailwind CSS** — utility-first styling
+- **Vite** — lightning-fast dev server
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+src/
+├── api/
+│   └── index.js          ← All API calls (import API from here)
+├── config.js             ← Constants: API_BASE, BASE_IMG, helpers
+├── context/
+│   └── AuthContext.jsx   ← Auth state (user, login, logout, updateUser)
+├── components/
+│   ├── Navbar.jsx
+│   ├── PostCard.jsx
+│   ├── CreatePostModal.jsx
+│   └── ProtectedRoute.jsx
+└── pages/
+    ├── AuthPage.jsx      ← Login / Register
+    ├── HomePage.jsx      ← Feed + Sidebar
+    ├── ProfilePage.jsx   ← User profile (grid + post tabs)
+    └── SettingsPage.jsx  ← Edit profile + change avatar
+```
 
-## Expanding the ESLint configuration
+## ⚠️ Critical Import Rule
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Always import `API` from `../api/index` — NEVER from `../config`.**
+
+```js
+// ✅ CORRECT
+import { API } from "../api/index";
+
+// ❌ WRONG — config.js does not export API
+import { API } from "../config";
+```
+
+`config.js` exports only: `API_BASE`, `BASE_IMG`, `imgUrl()`, `avatarUrl()`
+
+## Setup
+
+```bash
+npm install
+npm run dev
+```
+
+Frontend runs on **http://localhost:3000**
+
+Make sure the backend is running on **http://localhost:5000** first.
+
+## Features
+
+- 🔐 Register / Login with form validation
+- 🏠 Home feed with skeleton loading
+- 📸 Create post with image upload (drag & drop supported)
+- ❤️ Like / Unlike posts
+- 💬 Comment on posts (shows username immediately)
+- ✏️ Edit / Delete your own posts
+- 👤 Profile page with grid & post tabs
+- 👥 Follow / Unfollow users
+- ⚙️ Edit profile + change avatar
+- 📱 Fully responsive (mobile → desktop)
+
+## Environment
+
+No `.env` file needed. All URLs are in `src/config.js`:
+
+```js
+export const API_BASE = "http://localhost:5000/api";
+export const BASE_IMG = "http://localhost:5000/images/";
+```
+
+Change these if your backend runs on a different port.
